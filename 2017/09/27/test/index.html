@@ -564,18 +564,7 @@
 <p>项目３<br>:   定义 C</p>
 <p>:   定义 D</p>
 <pre><code>&gt; 定义D内容
-</code></pre><h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>代码块语法遵循标准markdown代码，例如：</p>
-<pre><code class="python">@requires_authorization
-def somefunc(param1=&#39;&#39;, param2=0):
-    &#39;&#39;&#39;A docstring&#39;&#39;&#39;
-    if param1 &gt; param2: # interesting
-        print &#39;Greater&#39;
-    return (param2 - param1 + 1) or None
-class SomeClass:
-    pass
-&gt;&gt;&gt; message = &#39;&#39;&#39;interpreter
-... prompt&#39;&#39;&#39;
-</code></pre>
+</code></pre><h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>代码块语法遵循标准markdown代码，例如：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@requires_authorization</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">somefunc</span><span class="params">(param1=<span class="string">''</span>, param2=<span class="number">0</span>)</span>:</span></div><div class="line">    <span class="string">'''A docstring'''</span></div><div class="line">    <span class="keyword">if</span> param1 &gt; param2: <span class="comment"># interesting</span></div><div class="line">        <span class="keyword">print</span> <span class="string">'Greater'</span></div><div class="line">    <span class="keyword">return</span> (param2 - param1 + <span class="number">1</span>) <span class="keyword">or</span> <span class="keyword">None</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>message = <span class="string">'''interpreter</span></div><div class="line"><span class="meta">... </span>prompt'''</div></pre></td></tr></table></figure></p>
 <p>###脚注<br>生成一个脚注[^footnote].<br>  [^footnote]: 这里是 <strong>脚注</strong> 的 <em>内容</em>.</p>
 <h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><p>用 <code>[TOC]</code>来生成目录：</p>
 <p>[TOC]</p>
@@ -588,20 +577,9 @@ class SomeClass:
 <p>更多LaTex语法请参考 <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="external">这儿</a>.</p>
 <h3 id="UML-图"><a href="#UML-图" class="headerlink" title="UML 图:"></a>UML 图:</h3><p>可以渲染序列图：</p>
 <img src="/img/EN2.png" class="[辩论稿]" title="瓜皮大一的时候写的辩论稿">
-<pre><code class="sequence">张三-&gt;李四: 嘿，小四儿, 写博客了没?
-Note right of 李四: 李四愣了一下，说：
-李四--&gt;张三: 忙得吐血，哪有时间写。
-</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">张三-&gt;李四: 嘿，小四儿, 写博客了没?</div><div class="line">Note right of 李四: 李四愣了一下，说：</div><div class="line">李四--&gt;张三: 忙得吐血，哪有时间写。</div></pre></td></tr></table></figure>
 <p>或者流程图：</p>
-<pre><code class="flow">st=&gt;start: 开始
-e=&gt;end: 结束
-op=&gt;operation: 我的操作
-cond=&gt;condition: 确认？
-
-st-&gt;op-&gt;cond
-cond(yes)-&gt;e
-cond(no)-&gt;op
-</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">st=&gt;start: 开始</div><div class="line">e=&gt;end: 结束</div><div class="line">op=&gt;operation: 我的操作</div><div class="line">cond=&gt;condition: 确认？</div><div class="line"></div><div class="line">st-&gt;op-&gt;cond</div><div class="line">cond(yes)-&gt;e</div><div class="line">cond(no)-&gt;op</div></pre></td></tr></table></figure>
 <ul>
 <li>关于 <strong>序列图</strong> 语法，参考 <a href="http://bramp.github.io/js-sequence-diagrams/" target="_blank" rel="external">这儿</a>,</li>
 <li>关于 <strong>流程图</strong> 语法，参考 <a href="http://adrai.github.io/flowchart.js/" target="_blank" rel="external">这儿</a>.</li>
