@@ -494,13 +494,74 @@
 <li><strong>2つのUSB 2.0 OTGインターフェイス。最大12個のノードをサポート</strong></li>
 <li><strong>2つのCAN2.0Bバスインタフェース - 2つのSDカード、SDIO、MMC互換コントローラ</strong></li>
 <li><strong>2つのSPI、2つのUART、2つのI2Cインターフェース</strong></li>
-<li><strong>32ビットGPIOの4つのグループ、PSシステムのIOとして54（32 + 22）、PLに接続された64</strong></li>
+<li><strong>32ビットGPIOの4つのグループ、PSシステムのIOとして、54（32 + 22）つ、64つGPIOがPLに接続された</strong></li>
 <li><strong>PLとPSとPSの間の高帯域幅接続</strong></li>
 </ul>
 <p>　　ZYNQはデュアルコアARM Cortex-A9、DSP48E2とFPGAを繋げられるシステムオンチップ（SoC）であり、直列プロセッサと並列プロセッサが繋がった異種システムのアーキテクチャはAXIバスを通じて最小の通信消耗で効率的に緊密で繋がり、協力して作業する。それは画像処理において、データ集約型の深層学習アルゴリズムがZyNQをキープロセッサにする設備の低消費電力、軽量、高性能を実現させることに新たな可能性を提供するという。</p>
 <p>　　新たなハットウェアプライベートは光学プロセッサをデプロイした移動プライベートに配置され、限定な消費電力で、耐荷重が殆ど 変わらない場合で、データ処理能力と計算能率を極大に高めることができ、コンピューターエンベデッドビジョンシステムの応用に新たな可能がある。</p>
 <p><img src="http://img.blog.csdn.net/20171025142855348?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGdPQ04y/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="XC7020">  </p>
 <p><img src="http://img.blog.csdn.net/20171025165510906?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGdPQ04y/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p><img src="http://img.blog.csdn.net/20171025222442828?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGdPQ04y/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p><img src="http://img.blog.csdn.net/20171025222515077?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGdPQ04y/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>···<br>`timescale 1ns / 1ps</p>
+<p>module top(<br>    inout [14:0]DDR_addr,<br>    inout [2:0]DDR_ba,<br>    inout DDR_cas_n,<br>    inout DDR_ck_n,<br>    inout DDR_ck_p,<br>    inout DDR_cke,<br>    inout DDR_cs_n,<br>    inout [3:0]DDR_dm,<br>    inout [31:0]DDR_dq,<br>    inout [3:0]DDR_dqs_n,<br>    inout [3:0]DDR_dqs_p,<br>    inout DDR_odt,<br>    inout DDR_ras_n,<br>    inout DDR_reset_n,<br>    inout DDR_we_n,<br>    inout FIXED_IO_ddr_vrn,<br>    inout FIXED_IO_ddr_vrp,<br>    inout [53:0]FIXED_IO_mio,<br>    inout FIXED_IO_ps_clk,<br>    inout FIXED_IO_ps_porb,<br>    inout FIXED_IO_ps_srstb,<br>    output [0:0]HDMI_OEN,<br>    output TMDS_clk_n,<br>    output TMDS_clk_p,<br>    output [2:0]TMDS_data_n,<br>    output [2:0]TMDS_data_p,<br>    input [0:0]hdmi_hpd_tri_i,</p>
+<pre><code>/*FPGA logic*/
+input  sys_clk_50m,
+inout                                        cmos1_scl,         //cmos i2c clock
+inout                                        cmos1_sda,         //cmos i2c data
+input                                        cmos1_vsync,       //cmos vsync
+input                                        cmos1_href,        //cmos hsync refrence
+input                                        cmos1_pclk,        //cmos pxiel clock
+
+input   [9:0]                                cmos1_d,           //cmos data
+output                                       cmos1_reset,       //cmos reset
+
+
+//cmos2 interface
+output                                       cmos2_scl,         //cmos i2c clock
+inout                                        cmos2_sda,         //cmos i2c data
+input                                        cmos2_vsync,       //cmos vsync
+input                                        cmos2_href,        //cmos hsync refrence
+input                                        cmos2_pclk,        //cmos pxiel clock
+
+input   [9:0]                                cmos2_d,          //cmos data
+output                                       cmos2_reset       //cmos reset
+);
+</code></pre><p>wire clk_camera;<br>wire locked;<br>sys_clock sys_clock_m0<br> (<br> // Clock in ports<br>    .clk_in1(sys_clk_50m),<br>  // Clock out ports<br>    .clk_out2(clk_camera),<br>  // Status and control signals<br>    .reset(1’b0),<br>    .locked(locked)<br> );<br>//CMOS OV5640<br>wire initial_en;                       //OV5640 register configure enable<br>power_on_delay    power_on_delay_inst(<br>    .clk_50M                 (clk_camera),<br>    .reset_n                 (1’b1),<br>    .camera1_rstn            (cmos1_reset),<br>    .camera2_rstn            (cmos2_reset),<br>    .camera_pwnd             (),<br>    .initial_en              (initial_en)<br>);</p>
+<p>//————————————-<br>//CMOS1 Camera<br>wire Cmos1_Config_Done;<br>reg_config    reg_config_inst1(<br>    .clk_25M                 (clk_camera),<br>    .camera_rstn             (cmos1_reset),<br>    .initial_en              (initial_en),<br>    .i2c_sclk                (),<br>    .i2c_sdat                (),<br>    .reg_conf_done           (Cmos1_Config_Done),<br>    .reg_index               (),<br>    .clock_20k               ()</p>
+<p>);</p>
+<p>//————————————-<br>//CMOS2 Camera<br>wire Cmos2_Config_Done;<br>reg_config    reg_config_inst2(<br>    .clk_25M                 (clk_camera),<br>    .camera_rstn             (cmos2_reset),<br>    .initial_en              (initial_en),<br>    .i2c_sclk                (cmos2_scl),<br>    .i2c_sdat                (cmos2_sda),<br>    .reg_conf_done           (Cmos2_Config_Done),<br>    .reg_index               (),<br>    .clock_20k               ()</p>
+<p>);<br>wire[15:0] cmos1_d_16bit;<br>wire cmos1_href_16bit;<br>reg[7:0] cmos1_d_d0;<br>reg cmos1_href_d0;<br>reg cmos1_vsync_d0;<br>wire cmos1_hblank;</p>
+<p>wire[15:0] cmos2_d_16bit;<br>wire cmos2_href_16bit;<br>reg[7:0] cmos2_d_d0;<br>reg cmos2_href_d0;<br>reg cmos2_vsync_d0;<br>wire cmos2_hblank;<br>always@(posedge cmos1_pclk)<br>begin<br>    cmos1_d_d0 &lt;= cmos1_d[9:2];<br>    cmos1_href_d0 &lt;= cmos1_href;<br>    cmos1_vsync_d0 &lt;= cmos1_vsync;<br>end</p>
+<p>always@(posedge cmos2_pclk)<br>begin<br>    cmos2_d_d0 &lt;= cmos2_d[9:2];<br>    cmos2_href_d0 &lt;= cmos2_href;<br>    cmos2_vsync_d0 &lt;= cmos2_vsync;<br>end</p>
+<p>cmos_8_16bit cmos_8_16bit_m0(<br>    .rst(1’b0),<br>    .pclk(cmos1_pclk),<br>    .pdata_i(cmos1_d_d0),<br>    .de_i(cmos1_href_d0),</p>
+<pre><code>.pdata_o(cmos1_d_16bit),
+.hblank(cmos1_hblank),
+.de_o(cmos1_href_16bit)
+</code></pre><p>);</p>
+<p>cmos_8_16bit cmos_8_16bit_m1(<br>    .rst(1’b0),<br>    .pclk(cmos2_pclk),<br>    .pdata_i(cmos2_d_d0),<br>    .de_i(cmos2_href_d0),</p>
+<pre><code>.pdata_o(cmos2_d_16bit),
+.hblank(cmos2_hblank),
+.de_o(cmos2_href_16bit)
+</code></pre><p>);</p>
+<p>wire vid_io_in_active_video;<br>wire vid_io_in_clk;<br>wire[31:0] vid_io_in_data;<br>wire vid_io_in_hsync;<br>wire vid_io_in_vsync;<br>assign vid_io_in_clk = cmos1_pclk;<br>assign vid_io_in_active_video = cmos1_href_16bit;<br>assign vid_io_in_data = {8’d0,cmos1_d_16bit[4:0],3’d0,cmos1_d_16bit[10:5],2’d0,cmos1_d_16bit[15:11],3’d0};<br>assign vid_io_in_hsync = cmos1_href_d0;<br>assign vid_io_in_vsync = cmos1_vsync_d0;</p>
+<p>wire vid1_io_in_active_video;<br>wire vid1_io_in_clk;<br>wire[31:0] vid1_io_in_data;<br>wire vid1_io_in_hsync;<br>wire vid1_io_in_vsync;<br>assign vid1_io_in_clk = cmos2_pclk;<br>assign vid1_io_in_active_video = cmos2_href_16bit;<br>assign vid1_io_in_data = {8’d0,cmos2_d_16bit[4:0],3’d0,cmos2_d_16bit[10:5],2’d0,cmos2_d_16bit[15:11],3’d0};<br>assign vid1_io_in_hsync = cmos2_href_d0;<br>assign vid1_io_in_vsync = cmos2_vsync_d0;</p>
+<p>wire aclk;<br>(<em>mark_debug = “true”</em>)wire[31:0] m_axis_video_tdata;<br>(<em>mark_debug = “true”</em>)wire m_axis_video_tvalid;<br>(<em>mark_debug = “true”</em>)wire m_axis_video_tready;<br>(<em>mark_debug = “true”</em>)wire m_axis_video_tuser;<br>(<em>mark_debug = “true”</em>)wire m_axis_video_tlast;</p>
+<p>(<em>mark_debug = “true”</em>)wire[31:0] m1_axis_video_tdata;<br>(<em>mark_debug = “true”</em>)wire m1_axis_video_tvalid;<br>(<em>mark_debug = “true”</em>)wire m1_axis_video_tready;<br>(<em>mark_debug = “true”</em>)wire m1_axis_video_tuser;<br>(<em>mark_debug = “true”</em>)wire m1_axis_video_tlast;</p>
+<p>cmos_in_axi4s cmos_in_axi4s_m0<br>  (<br>  // Native video signals<br>  .vid_io_in_clk           (vid_io_in_clk              ), // Native video clock<br>  .vid_io_in_ce            (1’b1                       ), // Native video clock enable<br>  .vid_io_in_reset         (1’b0                       ), // Native video reset active high<br>  .vid_active_video        (vid_io_in_active_video     ), // Native video data enable<br>  .vid_vblank              (1’b0                       ), // Native video vertical blank<br>  .vid_hblank              (cmos1_hblank      ), // Native video horizontal blank<br>  .vid_vsync               (vid_io_in_vsync            ), // Native video vertical sync<br>  .vid_hsync               (vid_io_in_hsync            ), // Native video horizontal sync<br>  .vid_field_id            (1’b0                       ), // Native video field-id<br>  .vid_data                (vid_io_in_data             ), // Native video data </p>
+<p>  // AXI4-Stream signals<br>  .aclk                    (aclk                 ), // AXI4-Stream clock<br>  .aclken                  (1’b1               ), // AXI4-Stream clock enable<br>  .aresetn                 (1’b1              ), // AXI4-Stream reset active low<br>  .m_axis_video_tdata      (m_axis_video_tdata   ), // AXI4-Stream data<br>  .m_axis_video_tvalid     (m_axis_video_tvalid  ), // AXI4-Stream valid<br>  .m_axis_video_tready     (m_axis_video_tready  ), // AXI4-Stream ready<br>  .m_axis_video_tuser      (m_axis_video_tuser   ), // AXI4-Stream tuser (SOF)<br>  .m_axis_video_tlast      (m_axis_video_tlast   ), // AXI4-Stream tlast (EOL)<br>  .fid                     (                     ), // Field-id output</p>
+<p>  // Video timing detector locked<br>    .axis_enable(1’b1)<br>);</p>
+<p>cmos_in_axi4s cmos_in_axi4s_m1<br>  (<br>  // Native video signals<br>  .vid_io_in_clk           (vid1_io_in_clk              ), // Native video clock<br>  .vid_io_in_ce            (1’b1                       ), // Native video clock enable<br>  .vid_io_in_reset         (1’b0                       ), // Native video reset active high<br>  .vid_active_video        (vid1_io_in_active_video     ), // Native video data enable<br>  .vid_vblank              (1’b0                       ), // Native video vertical blank<br>  .vid_hblank              (cmos2_hblank      ), // Native video horizontal blank<br>  .vid_vsync               (vid1_io_in_vsync            ), // Native video vertical sync<br>  .vid_hsync               (vid1_io_in_hsync            ), // Native video horizontal sync<br>  .vid_field_id            (1’b0                       ), // Native video field-id<br>  .vid_data                (vid1_io_in_data             ), // Native video data </p>
+<p>  // AXI4-Stream signals<br>  .aclk                    (aclk                 ), // AXI4-Stream clock<br>  .aclken                  (1’b1               ), // AXI4-Stream clock enable<br>  .aresetn                 (1’b1              ), // AXI4-Stream reset active low<br>  .m_axis_video_tdata      (m1_axis_video_tdata   ), // AXI4-Stream data<br>  .m_axis_video_tvalid     (m1_axis_video_tvalid  ), // AXI4-Stream valid<br>  .m_axis_video_tready     (m1_axis_video_tready  ), // AXI4-Stream ready<br>  .m_axis_video_tuser      (m1_axis_video_tuser   ), // AXI4-Stream tuser (SOF)<br>  .m_axis_video_tlast      (m1_axis_video_tlast   ), // AXI4-Stream tlast (EOL)<br>  .fid                     (                     ), // Field-id output</p>
+<p>  // Video timing detector locked<br>    .axis_enable(1’b1)<br>);<br>system_wrapper system_m0<br>(<br>    .DDR_addr                    ( DDR_addr                   ),<br>    .DDR_ba                      ( DDR_ba                     ),<br>    .DDR_cas_n                   ( DDR_cas_n                  ),<br>    .DDR_ck_n                    ( DDR_ck_n                   ),<br>    .DDR_ck_p                    ( DDR_ck_p                   ),<br>    .DDR_cke                     ( DDR_cke                    ),<br>    .DDR_cs_n                    ( DDR_cs_n                   ),<br>    .DDR_dm                      ( DDR_dm                     ),<br>    .DDR_dq                      ( DDR_dq                     ),<br>    .DDR_dqs_n                   ( DDR_dqs_n                  ),<br>    .DDR_dqs_p                   ( DDR_dqs_p                  ),<br>    .DDR_odt                     ( DDR_odt                    ),<br>    .DDR_ras_n                   ( DDR_ras_n                  ),<br>    .DDR_reset_n                 ( DDR_reset_n                ),<br>    .DDR_we_n                    ( DDR_we_n                   ),<br>    .FIXED_IO_ddr_vrn            ( FIXED_IO_ddr_vrn           ),<br>    .FIXED_IO_ddr_vrp            ( FIXED_IO_ddr_vrp           ),<br>    .FIXED_IO_mio                ( FIXED_IO_mio               ),<br>    .FIXED_IO_ps_clk             ( FIXED_IO_ps_clk            ),<br>    .FIXED_IO_ps_porb            ( FIXED_IO_ps_porb           ),<br>    .FIXED_IO_ps_srstb           ( FIXED_IO_ps_srstb          ),<br>    .HDMI_OEN                    ( HDMI_OEN                   ),<br>    .TMDS_clk_n                  ( TMDS_clk_n                 ),<br>    .TMDS_clk_p                  ( TMDS_clk_p                 ),<br>    .TMDS_data_n                 ( TMDS_data_n                ),<br>    .TMDS_data_p                 ( TMDS_data_p                ),<br>    .hdmi_hpd_tri_i              ( hdmi_hpd_tri_i             ),<br>    .iic_0_scl_io(cmos1_scl),<br>    .iic_0_sda_io(cmos1_sda),<br>    .clk_150m(aclk),<br>    .S_AXIS_S2MM_tdata(m_axis_video_tdata),<br>    .S_AXIS_S2MM_tkeep(4’b1111),<br>    .S_AXIS_S2MM_tlast(m_axis_video_tlast),<br>    .S_AXIS_S2MM_tready(m_axis_video_tready),<br>    .S_AXIS_S2MM_tuser(m_axis_video_tuser),<br>    .S_AXIS_S2MM_tvalid(m_axis_video_tvalid),</p>
+<pre><code>.S_AXIS_S2MM_1_tdata(m1_axis_video_tdata),
+.S_AXIS_S2MM_1_tkeep(4&apos;b1111),
+.S_AXIS_S2MM_1_tlast(m1_axis_video_tlast),
+.S_AXIS_S2MM_1_tready(m1_axis_video_tready),
+.S_AXIS_S2MM_1_tuser(m1_axis_video_tuser),
+.S_AXIS_S2MM_1_tvalid(m1_axis_video_tvalid)
+</code></pre><p>);<br>endmodule</p>
+<p>···</p>
 <p><img src="http://img.blog.csdn.net/20171025165606308?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGdPQ04y/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 <p><img src="http://img.blog.csdn.net/20171025165659560?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGdPQ04y/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 <p><img src="http://img.blog.csdn.net/20171025165751836?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSGdPQ04y/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
@@ -580,7 +641,7 @@
 <p>项目３<br>:   定义 C</p>
 <p>:   定义 D</p>
 <pre><code>&gt; 定义D内容
-</code></pre><h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>代码块语法遵循标准markdown代码，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">printf(&quot;hello world!&quot;);</div></pre></td></tr></table></figure></p>
+</code></pre><h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>代码块语法遵循标准markdown代码，例如：<br><figure class="highlight abnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">printf(<span class="string">"hello world!"</span>)<span class="comment">;</span></div></pre></td></tr></table></figure></p>
 <p>###脚注<br>生成一个脚注[^footnote].<br>  [^footnote]: 这里是 <strong>脚注</strong> 的 <em>内容</em>.</p>
 <h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><p>用 <code>[TOC]</code>来生成目录：</p>
 <p>[TOC]</p>
